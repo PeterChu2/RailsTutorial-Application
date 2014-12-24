@@ -30,7 +30,7 @@ class UserTest < ActiveSupport::TestCase
     @user.email = "a" * 256
     assert_not @user.valid?
   end
-  
+
   test "email should accept valid formats" do
     valid_emails = %w[ example@example.com EXAMPLE@example.COM
      ex_AM_ple@foo.bar.com foo+bar@example.com]
@@ -66,5 +66,9 @@ class UserTest < ActiveSupport::TestCase
   test "password should have minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
-  end  
+  end
+
+  test "authenticated? should return false for a user with nil digest" do
+    assert_not @user.authenticated?('')
+  end
 end
