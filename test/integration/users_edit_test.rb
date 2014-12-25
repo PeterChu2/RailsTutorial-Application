@@ -32,6 +32,13 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @user.reload
     assert_equal @user.name,  name
     assert_equal @user.email, email
+
+    # Ensure the forwarding URL should revert to the default on subsquent
+    # login attempts
+    get edit_user_path(@user)
+    assert_equal session[:forwarding_url].nil?, true
+    log_in_as(@user)
+    assert_redirected_to user_path(@user)
   end
 
 end
